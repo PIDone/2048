@@ -156,6 +156,8 @@ function shiftUp() {
 
     if (success)
 		genTile();
+
+	return success;
 }
 function shiftLeft() {
 	let success = false;
@@ -193,6 +195,8 @@ function shiftLeft() {
 
 	if (success)
 		genTile();
+
+	return success;
 }
 function shiftDown() {
 	let success = false;
@@ -230,6 +234,8 @@ function shiftDown() {
 
     if (success)
 		genTile();
+
+	return success;
 }
 function shiftRight() {
 	let success = false;
@@ -267,6 +273,8 @@ function shiftRight() {
 
     if (success)
 		genTile();
+
+	return success;
 }
 
 function merge(originalTile, addedTile) {
