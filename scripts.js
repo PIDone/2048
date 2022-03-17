@@ -1,5 +1,5 @@
 const BG_COLOR = "#cdc1b4";
-const EDGE_COLOR = "#bbada0";
+const EDGE_COLaaaaaaaaaaaaaaaaaaaaaaaaaaaOR = "#bbada0";
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
