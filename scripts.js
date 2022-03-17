@@ -48,7 +48,7 @@ function draw() {
 	}
 
 	if (!isGameOver && gameOver()) {
-		setTimeout(function() {
+		setTimeout(() => {
 			alert("Game Over! Score: "+score);
 		}, 1000);
 	}
@@ -67,13 +67,13 @@ function start() {
 
 	init();
 
-	window.onkeydown = function(event) {
+	window.onkeydown = event => {
 		handleKeyPress(event)
 		draw();
 	}
 
 	atlas.src = "tiles.png";
-	atlas.onload = function() {
+	atlas.onload = () => {
 		draw();
 	}
 }
@@ -101,19 +101,14 @@ function resize() {
 	}
 }
 
-const worker = new SharedWorker("worker.js");
-
 function toggleAI() {
 	aiButton.textContent = aiStatus ? "Start AI" : "Stop AI";
 	aiStatus = !aiStatus;
 
-	let boardString = "";
-	for (let i = 0; i < size; i++) {
-		for (let j = 0; j < size; j++) {
-			boardString += board[i][j];
-			boardString += " ";
-		}
-	}
+	if (!aiStatus)
+		return;
+
+	const worker = new SharedWorker("worker.js");
 
 	worker.port.start();
 	worker.port.postMessage(board);
@@ -121,5 +116,8 @@ function toggleAI() {
 	worker.port.onmessage = (event) => {
 		board = event.data;
 		draw();
+
+		if (aiStatus)
+			worker.port.postMessage(board);
 	};
 }

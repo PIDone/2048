@@ -2,25 +2,55 @@ var size = 0;
 var score = 0;
 var board = new Array();
 
-onconnect = (ev) => {
+onconnect = ev => {
 	const [port] = ev.ports;
-	port.onmessage = (event) => {
+	port.onmessage = event => {
 		score = 0;
 		board = event.data;
 		size = board.length;
 
-		shiftRight();
+		let bestMoveMap = new Array();
+		for (let i = 0; i < 4; i++)
+			bestMoveMap.push(0);
+		
+		for (let i = 0; i < 20; i++) {
+			let move = maxSearch(5, true);
+			bestMoveMap[move]++;
+		}
+
+		let largest = 0;
+		for (let i = 0; i < 4; i++) {
+			if (bestMoveMap[i] > largest)
+				largest = i;
+		}
+
+		switch (largest) {
+			case 0:
+				shiftUp();
+				break;
+			case 1:
+				shiftDown();
+				break;
+			case 2:
+				shiftLeft();
+				break;
+			case 3:
+				shiftRight();
+				break;
+		}
+
 		port.postMessage(board);
-	};
+	}
 };
 
 function evaluate() {
-	let maxTile = 0;
-	for (let i = 0; i < size; i++) {
-		for (let j = 0; j < size; j++)
-			maxTile = Math.max(board[i][j].exponent, maxTile);
-	}
-	return (score + 2**maxTile) / 2;
+	// let maxTile = 0;
+	// for (let i = 0; i < size; i++) {
+	// 	for (let j = 0; j < size; j++)
+	// 		maxTile = Math.max(board[i][j].exponent, maxTile);
+	// }
+	// return (score + 2**maxTile) / 2;
+	return score;
 }
 function maxSearch(depth, first) {
 	if (depth == 0)
@@ -49,6 +79,7 @@ function maxSearch(depth, first) {
 		for (let j = 0; j < size; j++)
 			board[i][j].exponent = copy[i][j];
 	}
+	score = oldScore;
 
 	shiftLeft()
 	search = maxSearch(depth-1, false);
@@ -60,6 +91,7 @@ function maxSearch(depth, first) {
 		for (let j = 0; j < size; j++)
 			board[i][j].exponent = copy[i][j];
 	}
+	score = oldScore;
 
 	shiftDown()
 	search = maxSearch(depth-1, false);
@@ -71,6 +103,7 @@ function maxSearch(depth, first) {
 		for (let j = 0; j < size; j++)
 			board[i][j].exponent = copy[i][j];
 	}
+	score = oldScore;
 
 	shiftRight()
 	search = maxSearch(depth-1, false);
@@ -82,7 +115,6 @@ function maxSearch(depth, first) {
 		for (let j = 0; j < size; j++)
 			board[i][j].exponent = copy[i][j];
 	}
-
 	score = oldScore;
 
 	return first ? bestMove : best;
