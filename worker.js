@@ -14,10 +14,12 @@ onconnect = ev => {
 		for (let i = 0; i < 4; i++)
 			bestMoveMap.push(0);
 		
-		for (let i = 0; i < 20; i++) {
-			let move = maxSearch(6, true);
+		for (let i = 0; i < 50; i++) {
+			let move = maxSearch(7, true);
 			bestMoveMap[move]++;
 		}
+
+		// console.log(bestMoveMap);
 
 		let largest = 0;
 		for (let i = 0; i < 4; i++) {
@@ -53,6 +55,28 @@ function evaluate() {
 	return (score + 2**maxTile) / 2;
 }
 function maxSearch(depth, first) {
+	let gameOver = true;
+	for (let i = 0; i < size; i++) {
+		let previous = -1;
+		for (let j = 0; j < size; j++) {
+			let current = board[i][j].exponent;
+			if (current == 0) return false;
+			if (current == previous) return false;
+			previous = current;
+		}
+	}
+	for (let i = 0; i < size; i++) {
+		let previous = -1;
+		for (let j = 0; j < size; j++) {
+			let current = board[j][i].exponent;
+			if (current == 0) return false;
+			if (current == previous) return false;
+			previous = current;
+		}
+	}
+	
+	if (gameOver)
+		return -100;
 	if (depth == 0)
 		return evaluate();
 
@@ -117,7 +141,8 @@ function maxSearch(depth, first) {
 	}
 	score = oldScore;
 
-	return first ? bestMove : best;
+	if (first) return best;
+	return bestMove;
 }
 
 function shiftUp() {
@@ -157,7 +182,7 @@ function shiftUp() {
     if (success)
 		genTile();
 
-	return success;
+	// return success;
 }
 function shiftLeft() {
 	let success = false;
@@ -196,7 +221,7 @@ function shiftLeft() {
 	if (success)
 		genTile();
 
-	return success;
+	// return success;
 }
 function shiftDown() {
 	let success = false;
@@ -235,7 +260,7 @@ function shiftDown() {
     if (success)
 		genTile();
 
-	return success;
+	// return success;
 }
 function shiftRight() {
 	let success = false;
@@ -274,7 +299,7 @@ function shiftRight() {
     if (success)
 		genTile();
 
-	return success;
+	// return success;
 }
 
 function merge(originalTile, addedTile) {
