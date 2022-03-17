@@ -114,7 +114,8 @@ function toggleAI() {
 	worker.port.postMessage(board);
 
 	worker.port.onmessage = (event) => {
-		board = event.data;
+		board = event.data[0];
+		score += event.data[1];
 		draw();
 
 		if (aiStatus)

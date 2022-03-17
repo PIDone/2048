@@ -5,6 +5,7 @@ var board = new Array();
 onconnect = ev => {
 	const [port] = ev.ports;
 	port.onmessage = event => {
+		board.length = 0;
 		score = 0;
 		board = event.data;
 		size = board.length;
@@ -14,7 +15,7 @@ onconnect = ev => {
 			bestMoveMap.push(0);
 		
 		for (let i = 0; i < 20; i++) {
-			let move = maxSearch(5, true);
+			let move = maxSearch(6, true);
 			bestMoveMap[move]++;
 		}
 
@@ -39,18 +40,17 @@ onconnect = ev => {
 				break;
 		}
 
-		port.postMessage(board);
+		port.postMessage([board, score]);
 	}
 };
 
 function evaluate() {
-	// let maxTile = 0;
-	// for (let i = 0; i < size; i++) {
-	// 	for (let j = 0; j < size; j++)
-	// 		maxTile = Math.max(board[i][j].exponent, maxTile);
-	// }
-	// return (score + 2**maxTile) / 2;
-	return score;
+	let maxTile = 0;
+	for (let i = 0; i < size; i++) {
+		for (let j = 0; j < size; j++)
+			maxTile = Math.max(board[i][j].exponent, maxTile);
+	}
+	return (score + 2**maxTile) / 2;
 }
 function maxSearch(depth, first) {
 	if (depth == 0)
