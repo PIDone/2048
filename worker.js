@@ -68,63 +68,129 @@ function maxSearch(depth, first) {
 
 	let best = 0;
 	let bestMove = -1;
-
 	let oldScore = score;
 
-	shiftUp()
-	let search = maxSearch(depth-1, false);
-	if (search > best) {
-		best = search;
-		bestMove = 0;
-	}
-	for (let i = 0; i < size; i++) {
-		for (let j = 0; j < size; j++)
-			board[i][j].exponent = copy[i][j];
-	}
-	score = oldScore;
+	let legalMoves = getLegalMoves();
+	for (let i = 0; i < legalMoves.length; i++) {
+		switch (legalMoves[i]) {
+			case 0:
+				shiftUp();
+				break;
+			case 1:
+				shiftLeft();
+				break;
+			case 2:
+				shiftDown();
+				break;
+			case 3:
+				shiftRight();
+				break;
+		}
 
-	shiftLeft()
-	search = maxSearch(depth-1, false);
-	if (search > best) {
-		best = search;
-		bestMove = 1;
+		let search = maxSearch(depth-1, false);
+		if (search > best) {
+			best = search;
+			bestMove = legalMoves[i];
+		}
+		for (let i = 0; i < size; i++) {
+			for (let j = 0; j < size; j++)
+				board[i][j].exponent = copy[i][j];
+		}
+		score = oldScore;
 	}
-	for (let i = 0; i < size; i++) {
-		for (let j = 0; j < size; j++)
-			board[i][j].exponent = copy[i][j];
-	}
-	score = oldScore;
 
-	shiftDown()
-	search = maxSearch(depth-1, false);
-	if (search > best) {
-		best = search;
-		bestMove = 2;
-	}
-	for (let i = 0; i < size; i++) {
-		for (let j = 0; j < size; j++)
-			board[i][j].exponent = copy[i][j];
-	}
-	score = oldScore;
-
-	shiftRight()
-	search = maxSearch(depth-1, false);
-	if (search > best) {
-		best = search;
-		bestMove = 3;
-	}
-	for (let i = 0; i < size; i++) {
-		for (let j = 0; j < size; j++)
-			board[i][j].exponent = copy[i][j];
-	}
-	score = oldScore;
-
-	if (first) return best;
-	return bestMove;
+	return first ? bestMove : best;
 }
 
 function getLegalMoves() {
+	let legalMoves = new Array();
 	
+	for (let i = 0; i < size; i++) {
+		let done = false;
+		let foundTile = false;
+		let previous = 0;
+		for (let j = size-1; j >= 0; j--) {
+			let current = board[j][i].exponent;
+			if (current > 0)
+				foundTile = true;
+			
+			if (foundTile) {
+				if (current == 0 || current == previous) {
+					legalMoves.push(0);
+					done = true;
+					break;
+				}
+				previous = current;
+			}
+		}
+
+		if (done) break;
+	}
+	for (let i = 0; i < size; i++) {
+		let done = false;
+		let foundTile = false;
+		let previous = 0;
+		for (let j = size-1; j >= 0; j--) {
+			let current = board[i][j].exponent;
+			if (current > 0)
+				foundTile = true;
+			
+			if (foundTile) {
+				if (current == 0 || current == previous) {
+					legalMoves.push(1);
+					done = true;
+					break;
+				}
+				previous = current;
+			}
+		}
+
+		if (done) break;
+	}
+	for (let i = 0; i < size; i++) {
+		let done = false;
+		let foundTile = false;
+		let previous = 0;
+		for (let j = 0; j < size; j++) {
+			let current = board[j][i].exponent;
+			if (current > 0)
+				foundTile = true;
+			
+			if (foundTile) {
+				if (current == 0 || current == previous) {
+					legalMoves.push(2);
+					done = true;
+					break;
+				}
+				previous = current;
+			}
+		}
+
+		if (done) break;
+	}
+	for (let i = 0; i < size; i++) {
+		let done = false;
+		let foundTile = false;
+		let previous = 0;
+		for (let j = 0; j < size; j++) {
+			let current = board[i][j].exponent;
+			if (current > 0)
+				foundTile = true;
+			
+			if (foundTile) {
+				if (current == 0 || current == previous) {
+					legalMoves.push(3);
+					done = true;
+					break;
+				}
+				previous = current;
+			}
+		}
+
+		if (done) break;
+	}
+
+	return legalMoves;
 }
 
 function shiftUp() {
