@@ -45,11 +45,11 @@ const fontColors = [
 const fontSizes = [
 	0.4,
 	0.35,
-	0.325,
-	0.28,
-	0.15,
-	0.125,
-	0.1,
+	0.33,
+	0.27,
+	0.24,
+	0.21,
+	0.18,
 ]
 
 var canvasSize = 500;
@@ -81,7 +81,11 @@ function draw() {
 		}
 	}
 
-
+	if (!isGameOver && gameOver()) {
+		aiStatus = false;
+		document.getElementById("aiButton").textContent = "Start AI";
+		setTimeout(() => alert(`Game Over! Score: ${score}`), 1000);
+	}
 }
 
 function start() {
@@ -162,8 +166,8 @@ function addSquare(x, y, exponent) {
 		color = "#000000";
 		fontColor = "#FFFFFF";
 	}
-	if (len > 8) {
-		fontSize = 0.2;
+	if (len > 7) {
+		fontSize = 0.225;
 	}
 
 	let div = document.createElement("div");
@@ -180,8 +184,8 @@ function addSquare(x, y, exponent) {
 	"left: " + (squareBorder / 2) + "px;" +
 	"font-family: customfont");
 
-	if (len > 8) {
-		div.textContent = "2^" + exponent.toString();
+	if (len > 7) {
+		div.textContent = `2^${exponent.toString()}`;
 	} else {
 		div.textContent = 2**exponent;
 	}
