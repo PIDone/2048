@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>2048</title>
+		<link rel="stylesheet" type="text/css" href="style.css" />
+	</head>
+	<body onload="start()">
+		<h1 id="score">Score: 0</h1>
+		<div id="buttonContainer">
+			<button onclick="reset()">Reset</button>
+			<button onclick="resizeQuery()">Resize Board</button>
+			<button onclick="canvasResize()">Resize Canvas</button>
+			<button id="aiButton" onclick="toggleAI()">Start AI</button>
+		</div>
+		<br />
+	</body>
+
+	<script type="text/javascript" src="gamelogic.js"></script>
+	<script type="text/javascript" src="drawing.js"></script>
+	<script type="text/javascript" src="worker.js"></script>
+	<script type="text/javascript" src="scripts.js"></script>
+</html>
