@@ -14,7 +14,7 @@ onconnect = ev => {
 		for (let i = 0; i < 4; i++)
 			bestMoveMap.push(0);
 		
-		for (let i = 0; i < 10; i++) {
+		for (let i = 0; i < 15; i++) {
 			let move = maxSearch(6, true);
 			bestMoveMap[move]++;
 		}
