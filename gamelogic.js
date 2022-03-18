@@ -17,7 +17,7 @@ function init() {
 	for (let i = 0; i < size; i++) {
 		let temp = new Array();
 		for (let j = 0; j < size; j++) 
-			temp.push(new Tile(22, false));
+			temp.push(new Tile(0, false));
 		board.push(temp);
 	}
 
