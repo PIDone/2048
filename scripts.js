@@ -48,6 +48,8 @@ function draw() {
 	}
 
 	if (!isGameOver && gameOver()) {
+		aiButton.textContent = "Start AI";
+		aiStatus = false;
 		setTimeout(() => {
 			alert("Game Over! Score: "+score);
 		}, 1000);
