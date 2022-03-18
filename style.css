@@ -1,0 +1,45 @@
+@font-face {
+	font-family: customfont;
+	src: url(LiberationMono-Regular.ttf);
+}
+
+canvas {
+	padding-left: 0;
+	padding-right: 0;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
+#buttonContainer {
+	display: flex;
+	justify-content: center;
+}
+
+button {
+	display: inline;
+}
+
+h1 {
+	font-family: customfont;
+	text-align: center;
+}
+
+.tile {
+	background-color: #cdc1b4;
+}
+
+table {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+body {
+	background-color: #bbada0;
+}
+
+.centered {
+	left: 2.5%;
+	top: 2.5%;
+	position: relative;
+}
