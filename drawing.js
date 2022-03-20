@@ -54,6 +54,8 @@ const fontSizes = [
 
 var canvasSize = 500;
 
+const canvasDiv = document.getElementById("canvasDiv");
+
 function getTile(x, y) {
 	return table.children[x].children[y].children[0];
 }
@@ -64,9 +66,8 @@ function draw() {
 	for (let i = 0; i < size; i++) {
 		for (let j = 0; j < size; j++) {
 			let tile = getTile(i, j);
-			while (tile.lastChild) {
+			while (tile.lastChild)
 				tile.lastChild.remove();
-			}
 		}
 	}
 
@@ -83,9 +84,8 @@ function draw() {
 				color = "#000000";
 				fontColor = "#FFFFFF";
 			}
-			if (len > 7) {
+			if (len > 7)
 				fontSize = 0.225;
-			}
 		
 			let div = document.createElement("div");
 			div.setAttribute("class", "centered");
@@ -101,11 +101,11 @@ function draw() {
 			"left: " + (squareBorder / 2) + "px;" +
 			"font-family: customfont");
 		
-			if (len > 7) {
+			if (len > 7)
 				div.textContent = `2^${exponent.toString()}`;
-			} else {
+			else
 				div.textContent = 2**exponent;
-			}
+				
 			getTile(i, j).appendChild(div);
 		}
 	}
@@ -126,11 +126,14 @@ function resize() {
 function displayInit() {
 	if (table)
 		table.remove();
+
 	table = document.createElement("table");
-	document.body.appendChild(table);
+	canvasDiv.appendChild(table);
+
 	for (let i = 0; i < size; i++) {
 		let row = document.createElement("tr");
 		table.appendChild(row);
+
 		for (let j = 0; j < size; j++) {
 			let tile = document.createElement("th");
 			let div = document.createElement("div");
