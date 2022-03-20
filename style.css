@@ -45,10 +45,18 @@ body {
 	position: relative;
 }
 
-p {
-	width: 50%;
-	display: inline-block;
-	text-align: center;
+#instruction {
 	background-color: white;
+	text-align: center;
+	width: 50%;
+	margin-left: 25%;
+	padding-top: 2px;
+	padding-left: 10px;
+	padding-bottom: 2px;
+	padding-right: 10px;
+}
+p {
+	text-align: center;
 	font-family: customfont;
+	line-height: 1.1em;
 }
