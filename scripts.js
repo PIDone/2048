@@ -1,6 +1,7 @@
 const aiButton = document.getElementById("aiButton");
 
 function resizeQuery() {
+	if (aiStatus) return;
 	let newSize = parseInt(window.prompt("Enter new size as integer: "));
 	if (isNaN(newSize))
 		alert("Please enter a valid integer");
@@ -12,6 +13,7 @@ function resizeQuery() {
 }
 
 function canvasResize() {
+	if (aiStatus) return;
 	let newSize = parseInt(window.prompt("Enter new size as integer: "));
 	if (isNaN(newSize))
 		alert("Please enter a valid integer");

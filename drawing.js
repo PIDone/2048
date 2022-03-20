@@ -99,7 +99,7 @@ function draw() {
 			"position: relative;" + 
 			"top: " + (squareBorder / 2) + "px;" +
 			"left: " + (squareBorder / 2) + "px;" +
-			"font-family: customfont");
+			"font-family: libmono");
 		
 			if (len > 7)
 				div.textContent = `2^${exponent.toString()}`;

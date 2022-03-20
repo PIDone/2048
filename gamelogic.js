@@ -35,6 +35,7 @@ function start() {
 }
 
 function reset() {
+	if (aiStatus) return;
 	score = 0;
 	init();
 	displayInit();

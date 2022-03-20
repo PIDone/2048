@@ -1,5 +1,5 @@
 @font-face {
-	font-family: customfont;
+	font-family: libmono;
 	src: url(LiberationMono-Regular.ttf);
 }
 
@@ -22,7 +22,7 @@ button {
 
 h1,
 h2 {
-	font-family: customfont;
+	font-family: libmono;
 	text-align: center;
 }
 
@@ -57,7 +57,7 @@ body {
 }
 p {
 	text-align: center;
-	font-family: customfont;
+	font-family: libmono;
 	line-height: 1.1em;
 }
 #red {
