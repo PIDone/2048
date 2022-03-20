@@ -20,7 +20,8 @@ button {
 	display: inline;
 }
 
-h1 {
+h1,
+h2 {
 	font-family: customfont;
 	text-align: center;
 }
@@ -42,4 +43,12 @@ body {
 	left: 2.5%;
 	top: 2.5%;
 	position: relative;
+}
+
+p {
+	width: 50%;
+	display: inline-block;
+	text-align: center;
+	background-color: white;
+	font-family: customfont;
 }

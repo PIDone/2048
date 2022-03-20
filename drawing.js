@@ -54,30 +54,59 @@ const fontSizes = [
 
 var canvasSize = 500;
 
+const canvasDiv = document.getElementById("canvasDiv");
+
 function getTile(x, y) {
 	return table.children[x].children[y].children[0];
-}
-
-function clearDisplay() {
-	for (let i = 0; i < size; i++) {
-		for (let j = 0; j < size; j++) {
-			let tile = getTile(i, j);
-			while (tile.lastChild) {
-				tile.lastChild.remove();
-			}
-		}
-	}
 }
 
 function draw() {
 	document.getElementById("score").textContent = "Score: "+score;
 	
-	clearDisplay();
+	for (let i = 0; i < size; i++) {
+		for (let j = 0; j < size; j++) {
+			let tile = getTile(i, j);
+			while (tile.lastChild)
+				tile.lastChild.remove();
+		}
+	}
+
 	for (let i = 0; i < size; i++) {
 		for (let j = 0; j < size; j++) {
 			let exponent = board[i][j].exponent;
 			if (exponent == 0) continue;
-			addSquare(i, j, exponent);
+
+			let color = colors[exponent - 1];
+			let fontColor = fontColors[exponent - 1];
+			let len = (2**exponent).toString().length;
+			let fontSize = fontSizes[len - 1];
+			if (color == undefined) {
+				color = "#000000";
+				fontColor = "#FFFFFF";
+			}
+			if (len > 7)
+				fontSize = 0.225;
+		
+			let div = document.createElement("div");
+			div.setAttribute("class", "centered");
+			div.setAttribute("style", 
+			"width: " + (squareSize - squareBorder) + "px;" +
+			"height: " + (squareSize - squareBorder) + "px;" +
+			"line-height: " + (squareSize - squareBorder) + "px;" +
+			"color: " + fontColor + ";" +
+			"font-size: " + fontSize * (squareSize - squareBorder) + "px;" +
+			"background-color: " + color + ";" +
+			"position: relative;" + 
+			"top: " + (squareBorder / 2) + "px;" +
+			"left: " + (squareBorder / 2) + "px;" +
+			"font-family: customfont");
+		
+			if (len > 7)
+				div.textContent = `2^${exponent.toString()}`;
+			else
+				div.textContent = 2**exponent;
+				
+			getTile(i, j).appendChild(div);
 		}
 	}
 
@@ -88,64 +117,23 @@ function draw() {
 	}
 }
 
-function start() {
-	size = 4;
-
-	init();
-	displayInit();
-	draw();
-
-	window.onkeydown = function(event) {
-		handleKeyPress(event)
-		draw();
-	}
-}
-
-function reset() {
-	score = 0;
-	init();
-	displayInit();
-	draw();
-}
-
-function resizeQuery() {
-	let newSize = parseInt(window.prompt("Enter new size as integer: "));
-	if (isNaN(newSize))
-		alert("Please enter a valid integer");
-	else {
-		resize(newSize);
-		reset();
-	}
-}
-
-function resize(newSize) {
-	size = newSize;
+function resize() {
 	squareSize = Math.floor(canvasSize / size);
 	border = Math.floor(squareSize / 25) * 2;
 	squareBorder = Math.floor(squareSize / 25);
 }
 
-function canvasResize() {
-	let newSize = parseInt(window.prompt("Enter new size as integer: "));
-	if (isNaN(newSize))
-		alert("Please enter a valid integer");
-	else {
-		canvasSize = newSize;
-
-		resize(size);
-		displayInit();
-		draw();
-	}
-}
-
 function displayInit() {
 	if (table)
 		table.remove();
+
 	table = document.createElement("table");
-	document.body.appendChild(table);
+	canvasDiv.appendChild(table);
+
 	for (let i = 0; i < size; i++) {
 		let row = document.createElement("tr");
 		table.appendChild(row);
+
 		for (let j = 0; j < size; j++) {
 			let tile = document.createElement("th");
 			let div = document.createElement("div");
@@ -155,39 +143,4 @@ function displayInit() {
 			tile.appendChild(div);
 		}
 	}
-}
-
-function addSquare(x, y, exponent) {
-	let color = colors[exponent - 1];
-	let fontColor = fontColors[exponent - 1];
-	let len = (2**exponent).toString().length;
-	let fontSize = fontSizes[len - 1];
-	if (color == undefined) {
-		color = "#000000";
-		fontColor = "#FFFFFF";
-	}
-	if (len > 7) {
-		fontSize = 0.225;
-	}
-
-	let div = document.createElement("div");
-	div.setAttribute("class", "centered");
-	div.setAttribute("style", 
-	"width: " + (squareSize - squareBorder) + "px;" +
-	"height: " + (squareSize - squareBorder) + "px;" +
-	"line-height: " + (squareSize - squareBorder) + "px;" +
-	"color: " + fontColor + ";" +
-	"font-size: " + fontSize * (squareSize - squareBorder) + "px;" +
-	"background-color: " + color + ";" +
-	"position: relative;" + 
-	"top: " + (squareBorder / 2) + "px;" +
-	"left: " + (squareBorder / 2) + "px;" +
-	"font-family: customfont");
-
-	if (len > 7) {
-		div.textContent = `2^${exponent.toString()}`;
-	} else {
-		div.textContent = 2**exponent;
-	}
-	getTile(x, y).appendChild(div);
 }

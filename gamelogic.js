@@ -25,7 +25,21 @@ function init() {
 	genTile();
 }
 
-var currentPress = 0;
+function start() {
+	size = 4;
+	reset();
+	window.onkeydown = function(event) {
+		handleKeyPress(event)
+		draw();
+	}
+}
+
+function reset() {
+	score = 0;
+	init();
+	displayInit();
+	draw();
+}
 
 function handleKeyPress(event) {
 	if (aiStatus || isGameOver) return;
@@ -89,28 +103,4 @@ function genTile() {
     let selected = Math.floor(Math.random() * empty.length);
 
     board[empty[selected].x][empty[selected].y].exponent = number;
-}
-
-const aiButton = document.getElementById("aiButton");
-
-function toggleAI() {
-	aiButton.textContent = aiStatus ? "Start AI" : "Stop AI";
-	aiStatus = !aiStatus;
-
-	if (!aiStatus)
-		return;
-
-	const worker = new SharedWorker("worker.js");
-
-	worker.port.start();
-	worker.port.postMessage(board);
-
-	worker.port.onmessage = (event) => {
-		board = event.data[0];
-		score += event.data[1];
-		draw();
-
-		if (aiStatus)
-			worker.port.postMessage(board);
-	};
 }
