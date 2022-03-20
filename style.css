@@ -60,3 +60,6 @@ p {
 	font-family: customfont;
 	line-height: 1.1em;
 }
+#red {
+	color: red;
+}
