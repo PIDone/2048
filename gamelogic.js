@@ -44,24 +44,31 @@ function reset() {
 
 function handleKeyPress(event) {
 	if (aiStatus || isGameOver) return;
+	event.preventDefault()
 	switch (event.code) {
 		case "KeyW":
 		case "KeyI":
+		case "ArrowUp":
 			shiftUp();
 			break;
 		case "KeyA":
 		case "KeyJ":
+		case "ArrowLeft":
 			shiftLeft();
 			break;
 		case "KeyS":
 		case "KeyK":
+		case "ArrowDown":
 			shiftDown();
 			break;
 		case "KeyD":
 		case "KeyL":
+		case "ArrowRight":
 			shiftRight();
 			break;
 	}
+
+	return false;
 }
 
 function gameOver() {
