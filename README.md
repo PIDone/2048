@@ -6,4 +6,4 @@ A simple 2048 (https://en.wikipedia.org/wiki/2048_(video_game)) implementation, 
 
 The algorithm to play the game is quite CPU intensive, so be careful when using it.
 
-### Special thanks to @JsonJ__ on GitLab for writing code for displaying the board
+### Special thanks to @JsonJ__ for writing code for displaying the board
