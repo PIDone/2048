@@ -2,7 +2,7 @@ const aiButton = document.getElementById("aiButton");
 
 function resizeQuery() {
 	if (aiStatus) return;
-	let newSize = parseInt(window.prompt("Enter new size as integer: "));
+	const newSize = parseInt(window.prompt("Enter new size as integer: "));
 	if (isNaN(newSize))
 		alert("Please enter a valid integer");
 	else {
@@ -14,7 +14,7 @@ function resizeQuery() {
 
 function canvasResize() {
 	if (aiStatus) return;
-	let newSize = parseInt(window.prompt("Enter new size as integer: "));
+	const newSize = parseInt(window.prompt("Enter new size as integer: "));
 	if (isNaN(newSize))
 		alert("Please enter a valid integer");
 	else {
@@ -23,6 +23,15 @@ function canvasResize() {
 		displayInit();
 		draw();
 	}
+}
+
+function changeThinkingTime() {
+	if (aiStatus) return;
+	const newTime = parseInt(window.prompt("Enter new time in milliseconds: "));
+	if (isNaN(newTime))
+		alert("Please enter a valid integer");
+	else
+		thinkingTime = newTime;
 }
 
 function toggleAI() {
@@ -35,7 +44,7 @@ function toggleAI() {
 	const worker = new SharedWorker("worker.js");
 
 	worker.port.start();
-	worker.port.postMessage(board);
+	worker.port.postMessage([board, thinkingTime]);
 
 	worker.port.onmessage = (event) => {
 		board = event.data[0];
@@ -43,6 +52,6 @@ function toggleAI() {
 		draw();
 
 		if (aiStatus)
-			worker.port.postMessage(board);
+			worker.port.postMessage([board, thinkingTime]);
 	};
 }

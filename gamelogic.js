@@ -10,6 +10,8 @@ var isGameOver = false;
 
 var board = new Array();
 
+var thinkingTime = 150;
+
 function init() {
 	isGameOver = false;
 	board = new Array();
@@ -107,8 +109,8 @@ function genTile() {
 	if (empty.length == 0)
 		return;
 
-    let number = Math.floor(Math.random()*10) == 0 ? 2 : 1;
-    let selected = Math.floor(Math.random() * empty.length);
+    const number = Math.floor(Math.random()*10) == 0 ? 2 : 1;
+    const selected = Math.floor(Math.random() * empty.length);
 
     board[empty[selected].x][empty[selected].y].exponent = number;
 }
