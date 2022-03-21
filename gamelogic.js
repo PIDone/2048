@@ -96,21 +96,3 @@ function gameOver() {
 	isGameOver = true;
     return true;
 }
-
-function genTile() {
-	let empty = new Array();
-    for (let i = 0; i < size; i++) {
-        for (let j = 0; j < size; j++) {
-            if (board[i][j].exponent == 0)
-                empty.push(new Coord(i, j));
-        }
-    }
-
-	if (empty.length == 0)
-		return;
-
-    const number = Math.floor(Math.random()*10) == 0 ? 2 : 1;
-    const selected = Math.floor(Math.random() * empty.length);
-
-    board[empty[selected].x][empty[selected].y].exponent = number;
-}

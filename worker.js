@@ -16,11 +16,9 @@ onconnect = ev => {
 		
 		const startTime = Date.now();
 		while (Date.now() - startTime <= event.data[1]) {
-			let move = maxSearch(6, true);
+			const move = maxSearch(6, true);
 			bestMoveMap[move]++;
 		}
-
-		console.log(bestMoveMap);
 
 		let largest = 0;
 		for (let i = 0; i < 4; i++) {
@@ -48,14 +46,14 @@ onconnect = ev => {
 };
 
 function evaluate() {
-	// let maxTile = 0;
-	// for (let i = 0; i < size; i++) {
-	// 	for (let j = 0; j < size; j++)
-	// 		maxTile = Math.max(board[i][j].exponent, maxTile);
-	// }
-	// return (score + 2**maxTile) / 2;
+	let maxTile = 0;
+	for (let i = 0; i < size; i++) {
+		for (let j = 0; j < size; j++)
+			maxTile = Math.max(board[i][j].exponent, maxTile);
+	}
+	return (score + 2**maxTile) / 2;
 
-	return score;
+	// return score;
 }
 function maxSearch(depth, first) {
 	if (depth == 0)
@@ -73,7 +71,7 @@ function maxSearch(depth, first) {
 	let bestMove = -1;
 	let oldScore = score;
 
-	let legalMoves = getLegalMoves();
+	const legalMoves = getLegalMoves();
 	for (let i = 0; i < legalMoves.length; i++) {
 		switch (legalMoves[i]) {
 			case 0:
@@ -90,7 +88,7 @@ function maxSearch(depth, first) {
 				break;
 		}
 
-		let search = maxSearch(depth-1, false);
+		const search = maxSearch(depth-1, false);
 		if (search > best) {
 			best = search;
 			bestMove = legalMoves[i];
@@ -113,7 +111,7 @@ function getLegalMoves() {
 		let foundTile = false;
 		let previous = 0;
 		for (let j = size-1; j >= 0; j--) {
-			let current = board[j][i].exponent;
+			const current = board[j][i].exponent;
 			if (current > 0)
 				foundTile = true;
 			
@@ -134,7 +132,7 @@ function getLegalMoves() {
 		let foundTile = false;
 		let previous = 0;
 		for (let j = size-1; j >= 0; j--) {
-			let current = board[i][j].exponent;
+			const current = board[i][j].exponent;
 			if (current > 0)
 				foundTile = true;
 			
@@ -155,7 +153,7 @@ function getLegalMoves() {
 		let foundTile = false;
 		let previous = 0;
 		for (let j = 0; j < size; j++) {
-			let current = board[j][i].exponent;
+			const current = board[j][i].exponent;
 			if (current > 0)
 				foundTile = true;
 			
@@ -176,7 +174,7 @@ function getLegalMoves() {
 		let foundTile = false;
 		let previous = 0;
 		for (let j = 0; j < size; j++) {
-			let current = board[i][j].exponent;
+			const current = board[i][j].exponent;
 			if (current > 0)
 				foundTile = true;
 			
@@ -226,7 +224,7 @@ function shiftUp() {
     }
 
 	for (let i = 0; i < merged.length; i++) {
-		let coord = merged[i];
+		const coord = merged[i];
 		board[coord.x][coord.y].moved = false;
 	}
 
@@ -263,7 +261,7 @@ function shiftLeft() {
     }
 
     for (let i = 0; i < merged.length; i++) {
-		let coord = merged[i];
+		const coord = merged[i];
 		board[coord.x][coord.y].moved = false;
 	}
 
@@ -300,7 +298,7 @@ function shiftDown() {
     }
 
 	for (let i = 0; i < merged.length; i++) {
-		let coord = merged[i];
+		const coord = merged[i];
 		board[coord.x][coord.y].moved = false;
 	}
 
@@ -337,7 +335,7 @@ function shiftRight() {
     }
 
     for (let i = 0; i < merged.length; i++) {
-		let coord = merged[i];
+		const coord = merged[i];
 		board[coord.x][coord.y].moved = false;
 	}
 
@@ -365,8 +363,8 @@ function genTile() {
 	if (empty.length == 0)
 		return;
 
-    let number = Math.floor(Math.random()*10) == 0 ? 2 : 1;
-    let selected = Math.floor(Math.random() * empty.length);
+	const number = Math.floor(Math.random()*10) == 0 ? 2 : 1;
+    const selected = Math.floor(Math.random() * empty.length);
 
     board[empty[selected].x][empty[selected].y].exponent = number;
 }
