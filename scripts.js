@@ -2,7 +2,9 @@ const aiButton = document.getElementById("aiButton");
 
 function resizeQuery() {
 	if (aiStatus) return;
-	const newSize = parseInt(window.prompt("Enter new size as integer: "));
+	const input = window.prompt("Enter new size as integer: ");
+	if (input == "" || input == null) return;
+	const newSize = parseInt(input);
 	if (isNaN(newSize))
 		alert("Please enter a valid integer");
 	else {
@@ -14,7 +16,9 @@ function resizeQuery() {
 
 function canvasResize() {
 	if (aiStatus) return;
-	const newSize = parseInt(window.prompt("Enter new size as integer: "));
+	const input = window.prompt("Enter new size as integer: ");
+	if (input == "" || input == null) return;
+	const newSize = parseInt(input);
 	if (isNaN(newSize))
 		alert("Please enter a valid integer");
 	else {
@@ -27,7 +31,9 @@ function canvasResize() {
 
 function changeThinkingTime() {
 	if (aiStatus) return;
-	const newTime = parseInt(window.prompt("Enter new time in milliseconds: "));
+	const input = window.prompt("Enter new time in milliseconds: ");
+	if (input == "" || input == null) return;
+	const newTime = parseInt(input);
 	if (isNaN(newTime))
 		alert("Please enter a valid integer");
 	else
