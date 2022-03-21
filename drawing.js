@@ -73,12 +73,12 @@ function draw() {
 
 	for (let i = 0; i < size; i++) {
 		for (let j = 0; j < size; j++) {
-			let exponent = board[i][j].exponent;
+			const exponent = board[i][j].exponent;
 			if (exponent == 0) continue;
 
 			let color = colors[exponent - 1];
 			let fontColor = fontColors[exponent - 1];
-			let len = (2**exponent).toString().length;
+			const len = (2**exponent).toString().length;
 			let fontSize = fontSizes[len - 1];
 			if (color == undefined) {
 				color = "#000000";

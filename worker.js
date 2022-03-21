@@ -7,14 +7,15 @@ onconnect = ev => {
 	port.onmessage = event => {
 		board.length = 0;
 		score = 0;
-		board = event.data;
+		board = event.data[0];
 		size = board.length;
 
 		let bestMoveMap = new Array();
 		for (let i = 0; i < 4; i++)
 			bestMoveMap.push(0);
 		
-		for (let i = 0; i < 30; i++) {
+		const startTime = Date.now();
+		while (Date.now() - startTime <= event.data[1]) {
 			let move = maxSearch(6, true);
 			bestMoveMap[move]++;
 		}
@@ -47,12 +48,14 @@ onconnect = ev => {
 };
 
 function evaluate() {
-	let maxTile = 0;
-	for (let i = 0; i < size; i++) {
-		for (let j = 0; j < size; j++)
-			maxTile = Math.max(board[i][j].exponent, maxTile);
-	}
-	return (score + 2**maxTile) / 2;
+	// let maxTile = 0;
+	// for (let i = 0; i < size; i++) {
+	// 	for (let j = 0; j < size; j++)
+	// 		maxTile = Math.max(board[i][j].exponent, maxTile);
+	// }
+	// return (score + 2**maxTile) / 2;
+
+	return score;
 }
 function maxSearch(depth, first) {
 	if (depth == 0)
