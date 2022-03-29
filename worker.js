@@ -14,11 +14,16 @@ onconnect = ev => {
 		for (let i = 0; i < 4; i++)
 			bestMoveMap.push(0);
 		
+		let depth = 0;
+		
 		const startTime = Date.now();
 		while (Date.now() - startTime <= event.data[1]) {
 			const move = maxSearch(6, true);
 			bestMoveMap[move]++;
+			depth++;
 		}
+
+		console.log(`Depth: ${depth}`);
 
 		let largest = 0;
 		for (let i = 0; i < 4; i++) {
@@ -45,15 +50,145 @@ onconnect = ev => {
 	}
 };
 
+class CoordWithValue {
+	constructor(value, x, y) {
+		this.value = value;
+		this.x = x;
+		this.y = y;
+  	}
+}
+
 function evaluate() {
+	if (gameOver(false))
+		return -1000000000;
+	
 	let maxTile = 0;
-	for (let i = 0; i < size; i++) {
-		for (let j = 0; j < size; j++)
+	for (let i = 0; i < size; i++)
+		for (let j = 0; j < size; j++) {
 			maxTile = Math.max(board[i][j].exponent, maxTile);
 	}
-	return (score + 2**maxTile) / 2;
 
-	// return score;
+	let monotonicity = 0;
+
+	let temp1 = 0;
+	let temp2 = 0;
+	let temp3 = 0;
+	let temp4 = 0;
+	
+	for (let i = 0; i < size; i++) {
+		let previous = -1;
+
+		let isMonotone1 = true;
+		let isMonotone2 = true;
+
+		for (let j = 0; j < size; j++) {
+			let current = board[i][j].exponent;
+			if (current == 0) {
+				previous = current;
+				continue;
+			}
+
+			if (current < previous) {
+				isMonotone1 = false;
+				break;
+			}
+
+			previous = current;
+		}
+
+		previous = 1000000000;
+
+		for (let j = 0; j < size; j++) {
+			let current = board[i][j].exponent;
+			if (current == 0) {
+				previous = current;
+				continue;
+			}
+
+			if (current > previous) {
+				isMonotone2 = false;
+				break;
+			}
+
+			previous = current;
+		}
+
+		temp1 += isMonotone1 ? 1 : 0;
+		temp2 += isMonotone2 ? 1 : 0;
+
+		previous = -1;
+
+		let isMonotone3 = true;
+		let isMonotone4 = true;
+
+		for (let j = 0; j < size; j++) {
+			let current = board[j][i].exponent;
+			if (current == 0) {
+				previous = current;
+				continue;
+			}
+
+			if (current < previous) {
+				isMonotone3 = false;
+				break;
+			}
+
+			previous = current;
+		}
+
+		previous = 1000000000;
+
+		for (let j = 0; j < size; j++) {
+			let current = board[j][i].exponent;
+			if (current == 0) {
+				previous = current;
+				continue;
+			}
+
+			if (current > previous) {
+				isMonotone4 = false;
+				break;
+			}
+
+			previous = current;
+		}
+
+		temp3 += isMonotone3 ? 1 : 0;
+		temp4 += isMonotone4 ? 1 : 0;
+	}
+
+	monotonicity = Math.max(temp1, temp2) + Math.max(temp3, temp4);
+
+	let eval =  score;
+	eval += maxTile * 3;
+	eval += (2 - monotonicity) * score * 3;
+
+	return eval;
+}
+function gameOver(changeVariable) {
+    for (let i = 0; i < size; i++) {
+        let previous = -1;
+        for (let j = 0; j < size; j++) {
+            let current = board[i][j].exponent;
+            if (current == 0) return false;
+            if (current == previous) return false;
+            previous = current;
+        }
+    }
+    for (let i = 0; i < size; i++) {
+        let previous = -1;
+        for (let j = 0; j < size; j++) {
+            let current = board[j][i].exponent;
+            if (current == 0) return false;
+            if (current == previous) return false;
+            previous = current;
+        }
+    }
+
+	if (changeVariable)
+		isGameOver = true;
+
+    return true;
 }
 function maxSearch(depth, first) {
 	if (depth == 0)
@@ -379,5 +514,5 @@ class Coord {
 	constructor(x, y) {
 		this.x = x;
 		this.y = y;
-  }
+  	}
 }

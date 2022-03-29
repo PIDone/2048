@@ -70,29 +70,7 @@ function handleKeyPress(event) {
 			break;
 	}
 
+	evaluate();
+
 	return false;
-}
-
-function gameOver() {
-    for (let i = 0; i < size; i++) {
-        let previous = -1;
-        for (let j = 0; j < size; j++) {
-            let current = board[i][j].exponent;
-            if (current == 0) return false;
-            if (current == previous) return false;
-            previous = current;
-        }
-    }
-    for (let i = 0; i < size; i++) {
-        let previous = -1;
-        for (let j = 0; j < size; j++) {
-            let current = board[j][i].exponent;
-            if (current == 0) return false;
-            if (current == previous) return false;
-            previous = current;
-        }
-    }
-
-	isGameOver = true;
-    return true;
 }

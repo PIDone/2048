@@ -1,3 +1,5 @@
+// CODE HERE WRITTEN BY JsonJ__
+
 const BG_COLOR = "#cdc1b4";
 const EDGE_COLOR = "#bbada0";
 const BLACK = "#000000"
@@ -110,7 +112,7 @@ function draw() {
 		}
 	}
 
-	if (!isGameOver && gameOver()) {
+	if (!isGameOver && gameOver(true)) {
 		aiStatus = false;
 		document.getElementById("aiButton").textContent = "Start AI";
 		setTimeout(() => alert(`Game Over! Score: ${score}`), 1000);
