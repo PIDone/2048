@@ -166,29 +166,29 @@ function evaluate() {
 	return eval;
 }
 function gameOver(changeVariable) {
-    for (let i = 0; i < size; i++) {
-        let previous = -1;
-        for (let j = 0; j < size; j++) {
-            let current = board[i][j].exponent;
-            if (current == 0) return false;
-            if (current == previous) return false;
-            previous = current;
-        }
-    }
-    for (let i = 0; i < size; i++) {
-        let previous = -1;
-        for (let j = 0; j < size; j++) {
-            let current = board[j][i].exponent;
-            if (current == 0) return false;
-            if (current == previous) return false;
-            previous = current;
-        }
-    }
+	for (let i = 0; i < size; i++) {
+		let previous = -1;
+		for (let j = 0; j < size; j++) {
+			let current = board[i][j].exponent;
+			if (current == 0) return false;
+			if (current == previous) return false;
+			previous = current;
+		}
+	}
+	for (let i = 0; i < size; i++) {
+		let previous = -1;
+		for (let j = 0; j < size; j++) {
+			let current = board[j][i].exponent;
+			if (current == 0) return false;
+			if (current == previous) return false;
+			previous = current;
+		}
+	}
 
 	if (changeVariable)
 		isGameOver = true;
 
-    return true;
+	return true;
 }
 function maxSearch(depth, first) {
 	if (depth == 0)
@@ -332,70 +332,70 @@ function getLegalMoves() {
 function shiftUp() {
 	let success = false;
 	let merged = new Array();
-    for (let i = 1; i < size; i++) {
-        for (let j = 0; j < size; j++) {
-            if (board[i][j].exponent == 0) continue;
+	for (let i = 1; i < size; i++) {
+		for (let j = 0; j < size; j++) {
+			if (board[i][j].exponent == 0) continue;
 
-            let maxSquare = i;
-            for (let k = i - 1; k >= 0; k--) {
-                if (board[k][j].exponent > 0) break;
-                maxSquare = k;
-            }
+			let maxSquare = i;
+			for (let k = i - 1; k >= 0; k--) {
+				if (board[k][j].exponent > 0) break;
+				maxSquare = k;
+			}
 
-            if (maxSquare > 0 && board[maxSquare-1][j].exponent == board[i][j].exponent) {
-                if (!board[maxSquare-1][j].moved) {
-                    merge(new Coord(maxSquare-1, j), new Coord(i, j));
-                    merged.push(new Coord(maxSquare-1, j));
-                    success = true;
-                    continue;
-                }
-            }
-            if (maxSquare == i) continue;
+			if (maxSquare > 0 && board[maxSquare-1][j].exponent == board[i][j].exponent) {
+				if (!board[maxSquare-1][j].moved) {
+					merge(new Coord(maxSquare-1, j), new Coord(i, j));
+					merged.push(new Coord(maxSquare-1, j));
+					success = true;
+					continue;
+				}
+			}
+			if (maxSquare == i) continue;
 
-            success = true;
-            board[maxSquare][j] = new Tile(board[i][j].exponent, false);
-            board[i][j] = new Tile(0, false);
-        }
-    }
+			success = true;
+			board[maxSquare][j] = new Tile(board[i][j].exponent, false);
+			board[i][j] = new Tile(0, false);
+		}
+	}
 
 	for (let i = 0; i < merged.length; i++) {
 		const coord = merged[i];
 		board[coord.x][coord.y].moved = false;
 	}
 
-    if (success)
+	if (success)
 		genTile();
 }
 function shiftLeft() {
 	let success = false;
 	let merged = new Array();
-    for (let i = 0; i < size; i++) {
-        for (let j = 0; j < size; j++) {
-            if (board[i][j].exponent == 0) continue;
+	for (let i = 0; i < size; i++) {
+		for (let j = 0; j < size; j++) {
+			if (board[i][j].exponent == 0) continue;
 
-            let maxSquare = j;
-            for (let k = j - 1; k >= 0; k--) {
-                if (board[i][k].exponent > 0) break;
-                maxSquare = k;
-            }
+			let maxSquare = j;
+			for (let k = j - 1; k >= 0; k--) {
+				if (board[i][k].exponent > 0) break;
+				maxSquare = k;
+			}
 
-            if (maxSquare > 0 && board[i][maxSquare-1].exponent == board[i][j].exponent) {
-                if (!board[i][maxSquare-1].moved) {
-                    merge(new Coord(i, maxSquare-1), new Coord(i, j));
-                    merged.push(new Coord(i, maxSquare-1));
-                    success = true;
-                    continue;
-                }
-            }
-            if (maxSquare == j) continue;
+			if (maxSquare > 0 && board[i][maxSquare-1].exponent == board[i][j].exponent) {
+				if (!board[i][maxSquare-1].moved) {
+					merge(new Coord(i, maxSquare-1), new Coord(i, j));
+					merged.push(new Coord(i, maxSquare-1));
+					success = true;
+					continue;
+				}
+			}
+			if (maxSquare == j) continue;
 
-            success = true;
-            board[i][maxSquare] = new Tile(board[i][j].exponent, false);
-            board[i][j] = new Tile(0, false);
-        }
-    }
+			success = true;
+			board[i][maxSquare] = new Tile(board[i][j].exponent, false);
+			board[i][j] = new Tile(0, false);
+		}
+	}
 
-    for (let i = 0; i < merged.length; i++) {
+	for (let i = 0; i < merged.length; i++) {
 		const coord = merged[i];
 		board[coord.x][coord.y].moved = false;
 	}
@@ -406,102 +406,102 @@ function shiftLeft() {
 function shiftDown() {
 	let success = false;
 	let merged = new Array();
-    for (let i = size-1; i >= 0; i--) {
-        for (let j = 0; j < size; j++) {
-            if (board[i][j].exponent == 0) continue;
+	for (let i = size-1; i >= 0; i--) {
+		for (let j = 0; j < size; j++) {
+			if (board[i][j].exponent == 0) continue;
 
-            let maxSquare = i;
-            for (let k = i + 1; k < size; k++) {
-                if (board[k][j].exponent > 0) break;
-                maxSquare = k;
-            }
+			let maxSquare = i;
+			for (let k = i + 1; k < size; k++) {
+				if (board[k][j].exponent > 0) break;
+				maxSquare = k;
+			}
 
-            if (maxSquare < size-1 && board[maxSquare+1][j].exponent == board[i][j].exponent) {
-                if (!board[maxSquare+1][j].moved) {
-                    merge(new Coord(maxSquare+1, j), new Coord(i, j));
-                    merged.push(new Coord(maxSquare+1, j));
-                    success = true;
-                    continue;
-                }
-            }
-            if (maxSquare == i) continue;
+			if (maxSquare < size-1 && board[maxSquare+1][j].exponent == board[i][j].exponent) {
+				if (!board[maxSquare+1][j].moved) {
+					merge(new Coord(maxSquare+1, j), new Coord(i, j));
+					merged.push(new Coord(maxSquare+1, j));
+					success = true;
+					continue;
+				}
+			}
+			if (maxSquare == i) continue;
 
-            success = true;
-            board[maxSquare][j] = new Tile(board[i][j].exponent, false);
-            board[i][j] = new Tile(0, false);
-        }
-    }
+			success = true;
+			board[maxSquare][j] = new Tile(board[i][j].exponent, false);
+			board[i][j] = new Tile(0, false);
+		}
+	}
 
 	for (let i = 0; i < merged.length; i++) {
 		const coord = merged[i];
 		board[coord.x][coord.y].moved = false;
 	}
 
-    if (success)
+	if (success)
 		genTile();
 }
 function shiftRight() {
 	let success = false;
 	let merged = new Array();
-    for (let i = 0; i < size; i++) {
-        for (let j = size-1; j >= 0; j--) {
-            if (board[i][j].exponent == 0) continue;
+	for (let i = 0; i < size; i++) {
+		for (let j = size-1; j >= 0; j--) {
+			if (board[i][j].exponent == 0) continue;
 
-            let maxSquare = j;
-            for (let k = j + 1; k < size; k++) {
-                if (board[i][k].exponent > 0) break;
-                maxSquare = k;
-            }
+			let maxSquare = j;
+			for (let k = j + 1; k < size; k++) {
+				if (board[i][k].exponent > 0) break;
+				maxSquare = k;
+			}
 
-            if (maxSquare < size-1 && board[i][maxSquare+1].exponent == board[i][j].exponent) {
-                if (!board[i][maxSquare+1].moved) {
-                    merge(new Coord(i, maxSquare+1), new Coord(i, j));
-                    merged.push(new Coord(i, maxSquare+1));
-                    success = true;
-                    continue;
-                }
-            }
-            if (maxSquare == j) continue;
+			if (maxSquare < size-1 && board[i][maxSquare+1].exponent == board[i][j].exponent) {
+				if (!board[i][maxSquare+1].moved) {
+					merge(new Coord(i, maxSquare+1), new Coord(i, j));
+					merged.push(new Coord(i, maxSquare+1));
+					success = true;
+					continue;
+				}
+			}
+			if (maxSquare == j) continue;
 
-            success = true;
-            board[i][maxSquare] = new Tile(board[i][j].exponent, false);
-            board[i][j] = new Tile(0, false);
-        }
-    }
+			success = true;
+			board[i][maxSquare] = new Tile(board[i][j].exponent, false);
+			board[i][j] = new Tile(0, false);
+		}
+	}
 
-    for (let i = 0; i < merged.length; i++) {
+	for (let i = 0; i < merged.length; i++) {
 		const coord = merged[i];
 		board[coord.x][coord.y].moved = false;
 	}
 
-    if (success)
+	if (success)
 		genTile();
 }
 
 function merge(originalTile, addedTile) {
-    board[originalTile.x][originalTile.y].exponent++;
-    board[originalTile.x][originalTile.y].moved = true;
-    board[addedTile.x][addedTile.y].exponent = 0;
+	board[originalTile.x][originalTile.y].exponent++;
+	board[originalTile.x][originalTile.y].moved = true;
+	board[addedTile.x][addedTile.y].exponent = 0;
 
 	score += 2 ** board[originalTile.x][originalTile.y].exponent;
 }
 
 function genTile() {
 	let empty = new Array();
-    for (let i = 0; i < size; i++) {
-        for (let j = 0; j < size; j++) {
-            if (board[i][j].exponent == 0)
-                empty.push(new Coord(i, j));
-        }
-    }
+	for (let i = 0; i < size; i++) {
+		for (let j = 0; j < size; j++) {
+			if (board[i][j].exponent == 0)
+				empty.push(new Coord(i, j));
+		}
+	}
 
 	if (empty.length == 0)
 		return;
 
 	const number = Math.floor(Math.random()*10) == 0 ? 2 : 1;
-    const selected = Math.floor(Math.random() * empty.length);
+	const selected = Math.floor(Math.random() * empty.length);
 
-    board[empty[selected].x][empty[selected].y].exponent = number;
+	board[empty[selected].x][empty[selected].y].exponent = number;
 }
 
 class Tile {
