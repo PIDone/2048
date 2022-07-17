@@ -8,11 +8,11 @@
 std::vector<int> shifting::getLegalShifts() {
 	std::vector<int> legalMoves;
 	
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < board::size; i++) {
 		int done = false;
 		int foundTile = false;
 		int previous = 0;
-		for (int j = 3; j >= 0; j--) {
+		for (int j = board::size - 1; j >= 0; j--) {
 			int current = board::board[j][i].exponent;
 			if (current > 0)
 				foundTile = true;
@@ -30,11 +30,11 @@ std::vector<int> shifting::getLegalShifts() {
 		if (done)
 			break;
 	}
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < board::size; i++) {
 		int done = false;
 		int foundTile = false;
 		int previous = 0;
-		for (int j = 3; j >= 0; j--) {
+		for (int j = board::size - 1; j >= 0; j--) {
 			int current = board::board[i][j].exponent;
 			if (current > 0)
 				foundTile = true;
@@ -52,11 +52,11 @@ std::vector<int> shifting::getLegalShifts() {
 		if (done)
 			break;
 	}
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < board::size; i++) {
 		int done = false;
 		int foundTile = false;
 		int previous = 0;
-		for (int j = 0; j < 4; j++) {
+		for (int j = 0; j < board::size; j++) {
 			int current = board::board[j][i].exponent;
 			if (current > 0)
 				foundTile = true;
@@ -74,11 +74,11 @@ std::vector<int> shifting::getLegalShifts() {
 		if (done)
 			break;
 	}
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < board::size; i++) {
 		int done = false;
 		int foundTile = false;
 		int previous = 0;
-		for (int j = 0; j < 4; j++) {
+		for (int j = 0; j < board::size; j++) {
 			int current = board::board[i][j].exponent;
 			if (current > 0)
 				foundTile = true;
@@ -103,8 +103,8 @@ std::vector<int> shifting::getLegalShifts() {
 void shifting::shiftUp() {
 	bool success = false;
 	std::vector<std::pair<int, int>> merged;
-	for (int i = 1; i < 4; i++) {
-		for (int j = 0; j < 4; j++) {
+	for (int i = 1; i < board::size; i++) {
+		for (int j = 0; j < board::size; j++) {
 			if (board::board[i][j].exponent == 0)
 				continue;
 
@@ -143,8 +143,8 @@ void shifting::shiftUp() {
 void shifting::shiftLeft() {
 	int success = false;
 	std::vector<std::pair<int, int>> merged;
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; j++) {
+	for (int i = 0; i < board::size; i++) {
+		for (int j = 0; j < board::size; j++) {
 			if (board::board[i][j].exponent == 0)
 				continue;
 
@@ -183,19 +183,19 @@ void shifting::shiftLeft() {
 void shifting::shiftDown() {
 	int success = false;
 	std::vector<std::pair<int, int>> merged;
-	for (int i = 3; i >= 0; i--) {
-		for (int j = 0; j < 4; j++) {
+	for (int i = board::size - 1; i >= 0; i--) {
+		for (int j = 0; j < board::size; j++) {
 			if (board::board[i][j].exponent == 0)
 				continue;
 
 			int maxSquare = i;
-			for (int k = i + 1; k < 4; k++) {
+			for (int k = i + 1; k < board::size; k++) {
 				if (board::board[k][j].exponent > 0)
 					break;
 				maxSquare = k;
 			}
 
-			if (maxSquare < 3 && board::board[maxSquare+1][j].exponent == board::board[i][j].exponent) {
+			if (maxSquare < board::size - 1 && board::board[maxSquare+1][j].exponent == board::board[i][j].exponent) {
 				if (!board::board[maxSquare+1][j].moved) {
 					merge({ maxSquare+1, j }, { i, j });
 					merged.push_back({ maxSquare+1, j });
@@ -223,19 +223,19 @@ void shifting::shiftDown() {
 void shifting::shiftRight() {
 	int success = false;
 	std::vector<std::pair<int, int>> merged;
-	for (int i = 0; i < 4; i++) {
-		for (int j = 3; j >= 0; j--) {
+	for (int i = 0; i < board::size; i++) {
+		for (int j = board::size - 1; j >= 0; j--) {
 			if (board::board[i][j].exponent == 0)
 				continue;
 
 			int maxSquare = j;
-			for (int k = j + 1; k < 4; k++) {
+			for (int k = j + 1; k < board::size; k++) {
 				if (board::board[i][k].exponent > 0)
 					break;
 				maxSquare = k;
 			}
 
-			if (maxSquare < 3 && board::board[i][maxSquare+1].exponent == board::board[i][j].exponent) {
+			if (maxSquare < board::size - 1 && board::board[i][maxSquare+1].exponent == board::board[i][j].exponent) {
 				if (!board::board[i][maxSquare+1].moved) {
 					merge({ i, maxSquare+1 }, { i, j });
 					merged.push_back({ i, maxSquare+1 });

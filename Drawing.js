@@ -63,16 +63,16 @@ function getTile(x, y) {
 function draw() {
 	document.getElementById("score").textContent = "Score: "+score;
 	
-	for (let i = 0; i < 4; i++) {
-		for (let j = 0; j < 4; j++) {
+	for (let i = 0; i < size; i++) {
+		for (let j = 0; j < size; j++) {
 			let tile = getTile(i, j);
 			while (tile.lastChild)
 				tile.lastChild.remove();
 		}
 	}
 
-	for (let i = 0; i < 4; i++) {
-		for (let j = 0; j < 4; j++) {
+	for (let i = 0; i < size; i++) {
+		for (let j = 0; j < size; j++) {
 			const exponent = board[i][j];
 			if (exponent == 0)
 				continue;
@@ -119,11 +119,11 @@ function init() {
 	table = document.createElement("table");
 	canvasDiv.appendChild(table);
 
-	for (let i = 0; i < 4; i++) {
+	for (let i = 0; i < size; i++) {
 		let row = document.createElement("tr");
 		table.appendChild(row);
 
-		for (let j = 0; j < 4; j++) {
+		for (let j = 0; j < size; j++) {
 			let tile = document.createElement("th");
 			let div = document.createElement("div");
 			div.setAttribute("class", "tile");
@@ -134,7 +134,7 @@ function init() {
 	}
 
 	Module["onRuntimeInitialized"] = () => {
-		Module.initBoard();
+		Module.init(size);
 		decode(Module.encode());
 		draw();
 	};

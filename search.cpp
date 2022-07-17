@@ -11,8 +11,8 @@ int search::evaluate() {
 		return -1000000000;
 	
 	int maxTile = 0;
-	for (int i = 0; i < 4; i++)
-		for (int j = 0; j < 4; j++) {
+	for (int i = 0; i < board::size; i++)
+		for (int j = 0; j < board::size; j++) {
 			maxTile = std::max(board::board[i][j].exponent, maxTile);
 	}
 
@@ -23,13 +23,13 @@ int search::evaluate() {
 	int temp3 = 0;
 	int temp4 = 0;
 	
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < board::size; i++) {
 		int previous = -1;
 
 		int isMonotone1 = true;
 		int isMonotone2 = true;
 
-		for (int j = 0; j < 4; j++) {
+		for (int j = 0; j < board::size; j++) {
 			int current = board::board[i][j].exponent;
 			if (current == 0) {
 				previous = current;
@@ -46,7 +46,7 @@ int search::evaluate() {
 
 		previous = 1000000000;
 
-		for (int j = 0; j < 4; j++) {
+		for (int j = 0; j < board::size; j++) {
 			int current = board::board[i][j].exponent;
 			if (current == 0) {
 				previous = current;
@@ -69,7 +69,7 @@ int search::evaluate() {
 		int isMonotone3 = true;
 		int isMonotone4 = true;
 
-		for (int j = 0; j < 4; j++) {
+		for (int j = 0; j < board::size; j++) {
 			int current = board::board[j][i].exponent;
 			if (current == 0) {
 				previous = current;
@@ -86,7 +86,7 @@ int search::evaluate() {
 
 		previous = 1000000000;
 
-		for (int j = 0; j < 4; j++) {
+		for (int j = 0; j < board::size; j++) {
 			int current = board::board[j][i].exponent;
 			if (current == 0) {
 				previous = current;
@@ -118,9 +118,9 @@ int search::max(int depth, bool first) {
 	if (depth == 0)
 		return evaluate();
 
-	int copy[4][4];
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; j++)
+	int copy[board::size][board::size];
+	for (int i = 0; i < board::size; i++) {
+		for (int j = 0; j < board::size; j++)
 			copy[i][j] = board::board[i][j].exponent;
 	}
 
@@ -151,8 +151,8 @@ int search::max(int depth, bool first) {
 			bestMove = legalMoves[i];
 		}
 		
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++)
+		for (int i = 0; i < board::size; i++) {
+			for (int j = 0; j < board::size; j++)
 				board::board[i][j].exponent = copy[i][j];
 		}
 		board::score = oldScore;

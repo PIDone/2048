@@ -9,7 +9,9 @@ namespace board {
 		bool moved;
 	};
 
-	extern Tile board[4][4];
+	extern int size;
+
+	extern Tile** board;
 	extern int score;
 
 	void decode(std::string text);
@@ -20,9 +22,7 @@ namespace board {
 	void newTile();
 	bool gameOver();
 
-
-
-	void init();
+	void init(int size);
 }
 
 #endif
