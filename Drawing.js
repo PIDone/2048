@@ -171,4 +171,26 @@ function init() {
 	}
 }
 
+function resize() {
+	let input = window.prompt("Enter new size as integer: ");
+	if (input == "" || input == null)
+		return;
+	let newSize = parseInt(input);
+	if (isNaN(newSize))
+		alert("Please enter a valid integer");
+	else if (newSize <= 0)
+		alert("Please enter a positive integer");
+	else {
+		size = newSize;
+		squareSize = Math.floor(canvasSize / size);
+		border = Math.floor(squareSize / 25) * 2;
+		squareBorder = Math.floor(squareSize / 25);
+
+		init();
+		Module.init(size);
+		decode(Module.encode());
+		draw();
+	}
+}
+
 init();

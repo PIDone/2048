@@ -91,7 +91,7 @@ bool board::gameOver() {
 
 void board::init(int size) {
 	std::string text = "";
-	for (int i = 0; i < (1 << size); i++)
+	for (int i = 0; i < size * size; i++)
 		text += "0 ";
 	text += "0";
 	srand(time(nullptr));
