@@ -5,6 +5,11 @@ const EDGE_COLOR = "#bbada0";
 const BLACK = "#000000"
 
 var table;
+var canvasSize = 500;
+const canvasDiv = document.getElementById("canvasDiv");
+
+var squareSize = 125;
+var squareBorder = Math.floor(squareSize / 25);
 
 const colors = [
 	"#eee4da", // 2
@@ -24,7 +29,6 @@ const colors = [
 	"#70b4d1", // 32768
 	"#619fe3", // 65536
 ]
-
 const fontColors = [
 	"#000000", // 2
 	"#000000", // 4
@@ -43,9 +47,8 @@ const fontColors = [
 	"#FFFFFF", // 32768
 	"#FFFFFF", // 65536
 ]
-
 const fontSizes = [
-	0.4,
+	0.35,
 	0.35,
 	0.33,
 	0.27,
@@ -54,33 +57,29 @@ const fontSizes = [
 	0.18,
 ]
 
-var canvasSize = 500;
-
-const canvasDiv = document.getElementById("canvasDiv");
-
 function getTile(x, y) {
 	return table.children[x].children[y].children[0];
 }
-
 function draw() {
 	document.getElementById("score").textContent = "Score: "+score;
 	
-	for (let i = 0; i < size; i++) {
-		for (let j = 0; j < size; j++) {
+	for (let i = 0; i < 4; i++) {
+		for (let j = 0; j < 4; j++) {
 			let tile = getTile(i, j);
 			while (tile.lastChild)
 				tile.lastChild.remove();
 		}
 	}
 
-	for (let i = 0; i < size; i++) {
-		for (let j = 0; j < size; j++) {
-			const exponent = board[i][j].exponent;
-			if (exponent == 0) continue;
+	for (let i = 0; i < 4; i++) {
+		for (let j = 0; j < 4; j++) {
+			const exponent = board[i][j];
+			if (exponent == 0)
+				continue;
 
 			let color = colors[exponent - 1];
 			let fontColor = fontColors[exponent - 1];
-			const len = (2**exponent).toString().length;
+			const len = (1 << exponent).toString().length;
 			let fontSize = fontSizes[len - 1];
 			if (color == undefined) {
 				color = "#000000";
@@ -90,59 +89,86 @@ function draw() {
 				fontSize = 0.225;
 		
 			let div = document.createElement("div");
-			div.setAttribute("class", "centered");
-			div.setAttribute("style", 
-			"width: " + (squareSize - squareBorder) + "px;" +
-			"height: " + (squareSize - squareBorder) + "px;" +
-			"line-height: " + (squareSize - squareBorder) + "px;" +
-			"color: " + fontColor + ";" +
-			"font-size: " + fontSize * (squareSize - squareBorder) + "px;" +
-			"background-color: " + color + ";" +
-			"position: relative;" + 
-			"top: " + (squareBorder / 2) + "px;" +
-			"left: " + (squareBorder / 2) + "px;" +
-			"font-family: libmono");
+			div.className = "centered";
+			div.setAttribute("style", `
+				width: ${ squareSize - squareBorder }px;
+				height: ${ squareSize - squareBorder }px;
+				line-height: ${ squareSize - squareBorder }px;
+				color: ${ fontColor };
+				font-size: ${ fontSize * (squareSize - squareBorder) }px;
+				background-color: ${ color };
+				position: relative;
+				top: ${ squareBorder / 2 }px;
+				left: ${ squareBorder / 2 }px;
+				font-family: libmono`);
 		
 			if (len > 7)
 				div.textContent = `2^${exponent.toString()}`;
 			else
-				div.textContent = 2**exponent;
+				div.textContent = 1 << exponent;
 				
 			getTile(i, j).appendChild(div);
 		}
 	}
-
-	if (!isGameOver && gameOver(true)) {
-		aiStatus = false;
-		document.getElementById("aiButton").textContent = "Start AI";
-		setTimeout(() => alert(`Game Over! Score: ${score}`), 1000);
-	}
 }
 
-function resize() {
-	squareSize = Math.floor(canvasSize / size);
-	border = Math.floor(squareSize / 25) * 2;
-	squareBorder = Math.floor(squareSize / 25);
-}
-
-function displayInit() {
+function init() {
 	if (table)
 		table.remove();
 
 	table = document.createElement("table");
 	canvasDiv.appendChild(table);
 
-	for (let i = 0; i < size; i++) {
+	for (let i = 0; i < 4; i++) {
 		let row = document.createElement("tr");
 		table.appendChild(row);
 
-		for (let j = 0; j < size; j++) {
+		for (let j = 0; j < 4; j++) {
 			let tile = document.createElement("th");
 			let div = document.createElement("div");
 			div.setAttribute("class", "tile");
-			div.setAttribute("style", "width:" + squareSize + "px; height:" + squareSize + "px;");
+			div.setAttribute("style", `width: ${ squareSize }px; height: ${ squareSize }px;`);
 			row.appendChild(tile);
 			tile.appendChild(div);
 		}
 	}
+
+	Module["onRuntimeInitialized"] = () => {
+		Module.initBoard();
+		decode(Module.encode());
+		draw();
+	};
+
+	window.onkeydown = function(event) {
+		event.view.event.preventDefault();
+		let move = -1;
+		switch (event.key) {
+			case "ArrowUp":
+			case "w":
+			case "i":
+				move = 0;
+				break;
+			case "ArrowLeft":
+			case "a":
+			case "j":
+				move = 1;
+				break;
+			case "ArrowDown":
+			case "s":
+			case "k":
+				move = 2;
+				break;
+			case "ArrowRight":
+			case "d":
+			case "l":
+				move = 3;
+				break;
+			default:
+				return;
+		}
+		decode(Module.shift(move));
+		draw();
+	}
 }
+
+init();
