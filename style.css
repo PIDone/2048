@@ -18,6 +18,14 @@ canvas {
 
 button {
 	display: inline;
+	font-size: 0.9rem;
+	border-radius: 1rem;
+	height: 2rem;
+	padding-left: 0.6rem;
+	padding-right: 0.6rem;
+	color: #328cc9;
+	border-color: #eeeeee;
+	background-color: #eeeeee;
 }
 
 h1,
