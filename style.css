@@ -1,0 +1,69 @@
+@font-face {
+	font-family: libmono;
+	src: url(LiberationMono-Regular.ttf);
+}
+
+canvas {
+	padding-left: 0;
+	padding-right: 0;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
+#buttonContainer {
+	display: flex;
+	justify-content: center;
+}
+
+button {
+	display: inline;
+}
+
+h1,
+h2 {
+	font-family: libmono;
+	text-align: center;
+}
+
+.tile {
+	background-color: #cdc1b4;
+}
+
+table {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+body {
+	background-color: #bbada0;
+}
+
+.centered {
+	left: 2.5%;
+	top: 2.5%;
+	position: relative;
+}
+
+#instruction {
+	background-color: white;
+	text-align: center;
+	width: 50%;
+	margin-left: 25%;
+	padding-top: 2px;
+	padding-left: 10px;
+	padding-bottom: 2px;
+	padding-right: 10px;
+}
+p {
+	text-align: center;
+	font-family: libmono;
+	line-height: 1.1em;
+}
+#red {
+	color: red;
+}
+
+#aiButton {
+	color: red;
+}
